@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,6 @@ namespace UnityRoyale
     public class NavMeshMove : UnitState
     {   
         private NavMeshAgent _agent;
-        private Vector3 _targetPosition;
         private bool _targetIsEnemy;
         private Tower _nearestTower;
 
@@ -15,40 +15,58 @@ namespace UnityRoyale
         {
             base.Constructor(unit);
 
-            _targetIsEnemy = Unit.IsEnemy == false;
-            _agent = Unit?.GetComponent<NavMeshAgent>();
+            _targetIsEnemy = _unit.IsEnemy == false;
+            _agent = _unit?.GetComponent<NavMeshAgent>();
 
-            _agent.radius = Unit.Parameters.ModelRadius;
-            _agent.speed = Unit.Parameters.Speed;
-            _agent.stoppingDistance = Unit.Parameters.StartAttackDistance;
+            _agent.radius = _unit.Parameters.ModelRadius;
+            _agent.speed = _unit.Parameters.Speed;
+            _agent.stoppingDistance = _unit.Parameters.StartAttackDistance;
         }
         public override void Init()
         {
-            var unitPosition = Unit.transform.position;
+            var unitPosition = _unit.transform.position;
             _nearestTower = MapInfo.Instance.GetNearestTower(in unitPosition, _targetIsEnemy);
-            _targetPosition = _nearestTower.transform.position;
             
-            _agent.SetDestination(_targetPosition);
+            _agent.SetDestination(_nearestTower.transform.position);
         }
 
         public override void Run()
         {
-            TryAttackTower();
-        }
+            if (TryAttackTower())
+                return;
+            if (TryAttackUnit())
+                return;
+        }        
 
         public override void Finish()
         {
             _agent.isStopped = true;
         }
 
-        private void TryAttackTower()
+        private bool TryAttackTower()
         {
-            var distanceToTarget = _nearestTower.GetDistance(Unit.transform.position); 
-            if (distanceToTarget <= Unit.Parameters.StartAttackDistance)
+            var distanceToTarget = _nearestTower.GetDistance(_unit.transform.position); 
+            if (distanceToTarget <= _unit.Parameters.StartAttackDistance)
             {
-                Debug.Log("Came running");
-                Unit.SetState(UnitStateTypes.ATTACK);
+                _unit.SetState(UnitStateTypes.ATTACK);
+                return true;
             }
+            return false;
+        }
+
+        private bool TryAttackUnit()
+        {
+            var hasEnemy = MapInfo.Instance.TryGetNearestUnit(_unit.transform.position, out Unit enemy, _targetIsEnemy, out float distance);
+            if (hasEnemy == false)
+                return false;
+
+            if(_unit.Parameters.StartChaseDistance >= distance + enemy.Parameters.ModelRadius)
+            {
+                _unit.SetState(UnitStateTypes.CHASE);
+                return true;
+            }
+
+            return false;
         }
     }
 }

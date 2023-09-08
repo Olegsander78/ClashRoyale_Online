@@ -27,23 +27,42 @@ namespace UnityRoyale
         [SerializeField] private List<Tower> _enemyTowers = new List<Tower>();
         [SerializeField] private List<Tower> _playerTowers = new List<Tower>();
 
+        [SerializeField] private List<Unit> _enemyUnits = new List<Unit>();
+        [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
+
+        public bool TryGetNearestUnit(in Vector3 currentPosition, out Unit unit, bool isEnemy, out float distance)
+        {
+            var units = isEnemy ? _enemyUnits : _playerUnits;
+            unit = GetNearestObject(currentPosition, units, out distance);
+            return unit;
+        }
+
         public Tower GetNearestTower(in Vector3 currentPosition, bool isEnemy)
         {
             var towers = isEnemy ? _enemyTowers : _playerTowers;
-            var nearestTower = towers[0];
-            var distance = Vector3.Distance(currentPosition, towers[0].transform.position);
+            return GetNearestObject(currentPosition, towers, out float distance);
+        }
 
-            for (int i = 1; i < towers.Count; i++)
+        private T GetNearestObject<T>(in Vector3 currentPosition, List<T> objects, out float distance) where T: MonoBehaviour
+        {
+            distance = float.MaxValue;
+            if (objects.Count < 0)
+                return null;
+
+            distance = Vector3.Distance(currentPosition, objects[0].transform.position);
+            T nearestObject = objects[0];
+
+            for (int i = 0; i < objects.Count; i++)
             {
-                var tempDistance = Vector3.Distance(currentPosition, towers[i].transform.position);
+                var tempDistance = Vector3.Distance(currentPosition, objects[i].transform.position);
                 if (tempDistance > distance)
                     continue;
 
-                nearestTower = towers[i];
+                nearestObject = objects[i];
                 distance = tempDistance;
             }
 
-            return nearestTower;
+            return nearestObject;
         }
     }
 }

@@ -24,26 +24,26 @@ namespace UnityRoyale
         }
         #endregion
 
-        [SerializeField] private List<Transform> _enemyTowers = new List<Transform>();
-        [SerializeField] private List<Transform> _playerTowers = new List<Transform>();
+        [SerializeField] private List<Tower> _enemyTowers = new List<Tower>();
+        [SerializeField] private List<Tower> _playerTowers = new List<Tower>();
 
-        public Vector3 GetNearestTowerPosition(in Vector3 currentPosition, bool isEnemy)
+        public Tower GetNearestTower(in Vector3 currentPosition, bool isEnemy)
         {
             var towers = isEnemy ? _enemyTowers : _playerTowers;
-            var nearestTowerPosition = towers[0].position;
-            var distance = Vector3.Distance(currentPosition, towers[0].position);
+            var nearestTower = towers[0];
+            var distance = Vector3.Distance(currentPosition, towers[0].transform.position);
 
             for (int i = 1; i < towers.Count; i++)
             {
-                var tempDistance = Vector3.Distance(currentPosition, towers[i].position);
+                var tempDistance = Vector3.Distance(currentPosition, towers[i].transform.position);
                 if (tempDistance > distance)
                     continue;
 
-                nearestTowerPosition = towers[i].position;
+                nearestTower = towers[i];
                 distance = tempDistance;
             }
 
-            return nearestTowerPosition;
+            return nearestTower;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace UnityRoyale
         private T GetNearestObject<T>(in Vector3 currentPosition, List<T> objects, out float distance) where T: MonoBehaviour
         {
             distance = float.MaxValue;
-            if (objects.Count < 0)
+            if (objects.Count <= 0)
                 return null;
 
             distance = Vector3.Distance(currentPosition, objects[0].transform.position);

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -56,7 +55,7 @@ namespace UnityRoyale
 
         private bool TryAttackUnit()
         {
-            var hasEnemy = MapInfo.Instance.TryGetNearestUnit(_unit.transform.position, out Unit enemy, _targetIsEnemy, out float distance);
+            var hasEnemy = MapInfo.Instance.TryGetNearestUnit(_unit.transform.position, _targetIsEnemy, out Unit enemy,  out float distance);
             if (hasEnemy == false)
                 return false;
 

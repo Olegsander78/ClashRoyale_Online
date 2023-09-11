@@ -12,5 +12,9 @@ namespace UnityRoyale
         public abstract void Init();
         public abstract void Finish();
         public abstract void Run();
+
+#if UNITY_EDITOR
+        public virtual void DebugDrawDistance(Unit unit) { }
+#endif
     }
 }

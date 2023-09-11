@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,12 +35,25 @@ namespace UnityRoyale
             float distanceToTarget = Vector3.Distance(_unit.transform.position, _targetUnit.transform.position);
             if (distanceToTarget > _unit.Parameters.StopChaseDistance)
                 _unit.SetState(UnitStateTypes.DEFAULT);
+            else if (distanceToTarget <= _unit.Parameters.StartAttackDistance + _targetUnit.Parameters.ModelRadius)
+                _unit.SetState(UnitStateTypes.ATTACK);
+            else _agent.SetDestination(_targetUnit.transform.position);
             
         }        
 
         public override void Finish()
         {
-            
-        }        
+            _agent.SetDestination(_unit.transform.position);
+        }
+
+#if UNITY_EDITOR
+        public override void DebugDrawDistance(Unit unit)
+        {
+            Handles.color = Color.red;
+            Handles.DrawWireDisc(unit.transform.position, Vector3.up, unit.Parameters.StartChaseDistance);
+            Handles.color = Color.yellow;
+            Handles.DrawWireDisc(unit.transform.position, Vector3.up, unit.Parameters.StopChaseDistance);
+        }
+#endif
     }
 }

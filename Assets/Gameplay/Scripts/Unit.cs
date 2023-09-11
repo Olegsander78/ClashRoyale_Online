@@ -56,5 +56,17 @@ namespace UnityRoyale
 
             _currentState.Init();
         }
+
+#if UNITY_EDITOR
+        [SerializeField] private bool _debugOn = false;
+        private void OnDrawGizmos()
+        {
+            if (_debugOn == false)
+                return;
+
+            if (_chaseStateSO != null)
+                _chaseStateSO.DebugDrawDistance(this);
+        }
+#endif
     }
 }

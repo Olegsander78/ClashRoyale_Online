@@ -2355,8 +2355,9 @@ MonoBehaviour:
   <IsEnemy>k__BackingField: 0
   Parameters: {fileID: 1927325159}
   _defaultStateSO: {fileID: 11400000, guid: 76d349e38920f5f44a804c7df54d501c, type: 2}
-  _chaseStateSO: {fileID: 11400000, guid: 76d349e38920f5f44a804c7df54d501c, type: 2}
+  _chaseStateSO: {fileID: 11400000, guid: 9ee1c0f7d804b594b93da62d41c412b9, type: 2}
   _attackStateSO: {fileID: 11400000, guid: 76d349e38920f5f44a804c7df54d501c, type: 2}
+  _debugOn: 1
 --- !u!114 &1927325159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2427,8 +2428,9 @@ MonoBehaviour:
   <IsEnemy>k__BackingField: 1
   Parameters: {fileID: 2008948748}
   _defaultStateSO: {fileID: 11400000, guid: 76d349e38920f5f44a804c7df54d501c, type: 2}
-  _chaseStateSO: {fileID: 11400000, guid: 76d349e38920f5f44a804c7df54d501c, type: 2}
+  _chaseStateSO: {fileID: 11400000, guid: 9ee1c0f7d804b594b93da62d41c412b9, type: 2}
   _attackStateSO: {fileID: 11400000, guid: 76d349e38920f5f44a804c7df54d501c, type: 2}
+  _debugOn: 1
 --- !u!195 &2008948750
 NavMeshAgent:
   m_ObjectHideFlags: 0

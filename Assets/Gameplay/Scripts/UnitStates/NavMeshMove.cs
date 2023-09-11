@@ -40,7 +40,7 @@ namespace UnityRoyale
 
         public override void Finish()
         {
-            _agent.isStopped = true;
+            _agent.SetDestination(_unit.transform.position);
         }
 
         private bool TryAttackTower()
@@ -60,7 +60,7 @@ namespace UnityRoyale
             if (hasEnemy == false)
                 return false;
 
-            if(_unit.Parameters.StartChaseDistance >= distance + enemy.Parameters.ModelRadius)
+            if(_unit.Parameters.StartChaseDistance >= distance)
             {
                 _unit.SetState(UnitStateTypes.CHASE);
                 return true;

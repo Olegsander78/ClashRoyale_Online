@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     public class Health : MonoBehaviour
     {

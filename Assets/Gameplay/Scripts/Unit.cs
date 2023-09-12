@@ -1,10 +1,13 @@
+using System;
 using UnityEngine;
+using UnityRoyale;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     [RequireComponent(typeof(UnitParameters), typeof(Health))]
-    public class Unit : MonoBehaviour, IHealth
+    public class Unit : MonoBehaviour, IHealth, IDestroy
     {
+        public event Action OnDestroyed;
         [field: SerializeField] public Health Health { get; private set; }
         [field: SerializeField] public bool IsEnemy { get; private set; } = false;
         [field: SerializeField] public UnitParameters Parameters;
@@ -19,16 +22,13 @@ namespace UnityRoyale
 
         private void Start()
         {
-            _defaultState = Instantiate(_defaultStateSO);
-            _defaultState.Constructor(this);
-            _chaseState = Instantiate(_chaseStateSO);
-            _chaseState.Constructor(this);
-            _attackState = Instantiate(_attackStateSO);
-            _attackState.Constructor(this);
+            CreateStates();
 
             _currentState = _defaultState;
             _currentState.Init();
-        }
+
+            Health.OnHealthChanged += CheckDestroy;
+        }        
 
         private void Update()
         {
@@ -58,8 +58,29 @@ namespace UnityRoyale
             _currentState.Init();
         }
 
+        private void CreateStates()
+        {
+            _defaultState = Instantiate(_defaultStateSO);
+            _defaultState.Constructor(this);
+            _chaseState = Instantiate(_chaseStateSO);
+            _chaseState.Constructor(this);
+            _attackState = Instantiate(_attackStateSO);
+            _attackState.Constructor(this);
+        }
+
+        private void CheckDestroy(float currentHP)
+        {
+            if (currentHP > 0)
+                return;
+
+            Health.OnHealthChanged -= CheckDestroy;
+            Destroy(gameObject);
+            OnDestroyed?.Invoke();
+        }
+
 #if UNITY_EDITOR
-        [SerializeField] private bool _debugOn = false;
+        [SerializeField] private bool _debugOn = false;        
+
         private void OnDrawGizmos()
         {
             if (_debugOn == false)

@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
+using UnityRoyale;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     public class MapInfo : MonoBehaviour
     {
@@ -21,7 +24,7 @@ namespace UnityRoyale
         {
             if (Instance == this)
                 Instance = null;
-        }
+        }        
         #endregion
 
         [SerializeField] private List<Tower> _enemyTowers = new List<Tower>();
@@ -29,6 +32,14 @@ namespace UnityRoyale
 
         [SerializeField] private List<Unit> _enemyUnits = new List<Unit>();
         [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
+
+        private void Start()
+        {
+            SubscribeDestroy(_enemyTowers);
+            SubscribeDestroy(_playerTowers);
+            SubscribeDestroy(_enemyUnits);
+            SubscribeDestroy(_playerUnits);
+        }
 
         public bool TryGetNearestUnit(in Vector3 currentPosition, bool isEnemy, out Unit unit,  out float distance)
         {
@@ -63,6 +74,43 @@ namespace UnityRoyale
             }
 
             return nearestObject;
+        }
+
+        private void SubscribeDestroy<T>(List<T> objects) where T: IDestroy
+        {
+            for (int i = 0; i < objects.Count; i++)
+            {
+                var obj = objects[i];
+                objects[i].OnDestroyed += RemoveAndUnsubscribe;
+
+                void RemoveAndUnsubscribe()
+                {
+                    RemoveObjectFromList(objects, obj);
+                    obj.OnDestroyed -= RemoveAndUnsubscribe;
+                }
+            }
+        }
+
+        private void AddObjectToList<T>(List<T> list, T obj) where T: IDestroy
+        {
+            list.Add(obj);
+            obj.OnDestroyed += RemoveAndUnsubscribe;
+
+            void RemoveAndUnsubscribe()
+            {
+                RemoveObjectFromList(list, obj);
+                obj.OnDestroyed -= RemoveAndUnsubscribe;
+            }
+        }
+        private void RemoveObjectFromList<T>(List<T> list, T obj)
+        {
+            if (list.Contains(obj))
+                list.Remove(obj);
+        }
+
+        private void Destroy()
+        {
+            throw new NotImplementedException();
         }
     }
 }

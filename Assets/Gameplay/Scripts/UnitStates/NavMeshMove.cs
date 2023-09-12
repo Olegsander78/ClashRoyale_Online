@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     [CreateAssetMenu(fileName ="_NavMeshMove",menuName ="UnitStates/NavMeshMove")]
     public class NavMeshMove : UnitState

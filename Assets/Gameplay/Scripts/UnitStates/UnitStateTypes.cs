@@ -1,4 +1,4 @@
-namespace UnityRoyale
+namespace ClashRoyale
 {
     public enum UnitStateTypes 
     {

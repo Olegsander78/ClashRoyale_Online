@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     [CreateAssetMenu(fileName = "_NavMeshChase", menuName = "UnitStates/NavMeshChase")]
     public class NavMeshChase : UnitState

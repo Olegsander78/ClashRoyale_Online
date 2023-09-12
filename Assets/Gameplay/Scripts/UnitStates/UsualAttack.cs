@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     [CreateAssetMenu(fileName = "_UsualAttack", menuName = "UnitStates/UsualAttack")]
     public class UsualAttack : UnitState

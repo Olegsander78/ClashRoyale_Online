@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     public class UnitParameters : MonoBehaviour
     {        

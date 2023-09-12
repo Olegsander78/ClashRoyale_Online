@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityRoyale
+namespace ClashRoyale
 {
     public class TowerUI : MonoBehaviour
     {

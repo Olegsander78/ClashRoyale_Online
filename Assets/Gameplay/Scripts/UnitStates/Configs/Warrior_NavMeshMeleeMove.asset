@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32ac0acf13471f94489bf6377e1099a0, type: 3}
-  m_Name: Warrior_NavMeshMove
+  m_Script: {fileID: 11500000, guid: cb7dc977c95b41d4e958c3462378a54e, type: 3}
+  m_Name: Warrior_NavMeshMeleeMove
   m_EditorClassIdentifier: 
-  _moveOffset: 1

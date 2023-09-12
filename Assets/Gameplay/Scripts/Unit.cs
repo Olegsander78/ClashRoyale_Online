@@ -11,6 +11,7 @@ namespace ClashRoyale
         [field: SerializeField] public Health Health { get; private set; }
         [field: SerializeField] public bool IsEnemy { get; private set; } = false;
         [field: SerializeField] public UnitParameters Parameters;
+
         [SerializeField] private UnitState _defaultStateSO;
         [SerializeField] private UnitState _chaseStateSO;
         [SerializeField] private UnitState _attackStateSO;

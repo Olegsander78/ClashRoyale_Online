@@ -7,6 +7,7 @@ namespace ClashRoyale
     {
         public event Action<float> OnHealthChanged;
         [field: SerializeField] public float Max { get; private set; } = 10f;
+
         private float _current;
 
         private void Start()

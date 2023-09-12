@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityRoyale;
 
@@ -30,20 +28,60 @@ namespace ClashRoyale
         [SerializeField] private List<Tower> _enemyTowers = new List<Tower>();
         [SerializeField] private List<Tower> _playerTowers = new List<Tower>();
 
-        [SerializeField] private List<Unit> _enemyUnits = new List<Unit>();
-        [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
+        [SerializeField] private List<Unit> _enemyWalkingUnits = new List<Unit>();
+        [SerializeField] private List<Unit> _playerWalkingUnits = new List<Unit>();
+        [SerializeField] private List<Unit> _enemyFlyingUnits = new List<Unit>();
+        [SerializeField] private List<Unit> _playerFlyingUnits = new List<Unit>();
 
         private void Start()
         {
             SubscribeDestroy(_enemyTowers);
             SubscribeDestroy(_playerTowers);
-            SubscribeDestroy(_enemyUnits);
-            SubscribeDestroy(_playerUnits);
+            SubscribeDestroy(_enemyWalkingUnits);
+            SubscribeDestroy(_playerWalkingUnits);
         }
 
-        public bool TryGetNearestUnit(in Vector3 currentPosition, bool isEnemy, out Unit unit,  out float distance)
+        public void AddUnit(Unit unit)
         {
-            var units = isEnemy ? _enemyUnits : _playerUnits;
+            List<Unit> list;
+
+            if (unit.IsEnemy == true)
+                list = unit.Parameters.IsFlying ? _enemyFlyingUnits : _enemyWalkingUnits;
+            else
+                list = unit.Parameters.IsFlying ? _playerFlyingUnits : _playerWalkingUnits;
+
+            AddObjectToList(list, unit);
+        }
+
+        public bool TryGetNearestAnyUnit(in Vector3 currentPosition, bool isEnemy, out Unit unit,  out float distance)
+        {
+            TryGetNearestWalkingUnit(currentPosition, isEnemy, out Unit walking, out float walkingDistance);
+            TryGetNearestFlyingUnit(currentPosition, isEnemy, out Unit flying, out float flyingDistance);
+
+            if(flyingDistance < walkingDistance)
+            {
+                unit = flying;
+                distance = flyingDistance;
+            }
+            else
+            {
+                unit = walking;
+                distance = walkingDistance;
+            }
+
+            return unit;
+        }
+
+        public bool TryGetNearestWalkingUnit(in Vector3 currentPosition, bool isEnemy, out Unit unit, out float distance)
+        {
+            var units = isEnemy ? _enemyWalkingUnits : _playerWalkingUnits;
+            unit = GetNearestObject(currentPosition, units, out distance);
+            return unit;
+        }
+
+        public bool TryGetNearestFlyingUnit(in Vector3 currentPosition, bool isEnemy, out Unit unit, out float distance)
+        {
+            var units = isEnemy ? _enemyFlyingUnits : _playerFlyingUnits;
             unit = GetNearestObject(currentPosition, units, out distance);
             return unit;
         }
@@ -106,11 +144,6 @@ namespace ClashRoyale
         {
             if (list.Contains(obj))
                 list.Remove(obj);
-        }
-
-        private void Destroy()
-        {
-            throw new NotImplementedException();
         }
     }
 }

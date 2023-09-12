@@ -4,10 +4,10 @@ namespace ClashRoyale
 {
     public abstract class UnitState : ScriptableObject
     {
-        protected Unit _unit;
+        protected Unit Unit;
         public virtual void Constructor(Unit unit)
         {
-            _unit = unit;
+            Unit = unit;
         }
         public abstract void Init();
         public abstract void Finish();

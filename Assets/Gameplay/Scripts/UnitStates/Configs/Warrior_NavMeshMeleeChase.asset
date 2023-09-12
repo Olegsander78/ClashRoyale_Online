@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4c65e28cf39d374bbb16506d41fa6a0, type: 3}
-  m_Name: Warrior_NavMeshChase
+  m_Script: {fileID: 11500000, guid: f8023f26751a7be4daf90e430a5959f8, type: 3}
+  m_Name: Warrior_NavMeshMeleeChase
   m_EditorClassIdentifier: 

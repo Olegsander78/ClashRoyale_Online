@@ -11,6 +11,8 @@ namespace ClashRoyale
         [SerializeField] private float _stopAttackDistance = 1.5f;
         [SerializeField] private float _startChaseDistance = 5f;
         [SerializeField] private float _stopChaseDistance = 7f;
+        [SerializeField] private float _damageDelay = 2f;
+
 
         public bool IsFlying { get => _isFlying; private set => _isFlying = value; }
         public float Speed { get => _speed; private set => _speed = value; }
@@ -19,5 +21,6 @@ namespace ClashRoyale
         public float StopAttackDistance { get => _stopAttackDistance + _modelRadius; private set => _stopAttackDistance = value; }
         public float StartChaseDistance { get => _startChaseDistance; private set => _startChaseDistance = value; }
         public float StopChaseDistance { get => _stopChaseDistance; private set => _stopChaseDistance = value; }
+        public float DamageDelay { get => _damageDelay; private set => _damageDelay = value; }
     }
 }

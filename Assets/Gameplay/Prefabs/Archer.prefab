@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 8645080984512393663}
   - component: {fileID: 8645080984512393648}
   - component: {fileID: 6680375212242749872}
+  - component: {fileID: 6040970797674749488}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -172,6 +173,7 @@ MonoBehaviour:
   <Health>k__BackingField: {fileID: 8645080984512393648}
   <IsEnemy>k__BackingField: 0
   Parameters: {fileID: 8645080984512393663}
+  AnimationsUnit: {fileID: 6040970797674749488}
   _defaultStateSO: {fileID: 11400000, guid: 76d349e38920f5f44a804c7df54d501c, type: 2}
   _chaseStateSO: {fileID: 11400000, guid: 9ee1c0f7d804b594b93da62d41c412b9, type: 2}
   _attackStateSO: {fileID: 11400000, guid: 5edd05a1ead6fd54fa974687a7da8c2d, type: 2}
@@ -188,13 +190,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dde6092fc149434abd312012c8e6220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isFling: 0
+  _isFlying: 0
   _speed: 4
   _modelRadius: 0.25
-  _startAttackDistance: 3
-  _stopAttackDistance: 4
-  _startChaseDistance: 6
-  _stopChaseDistance: 8
+  _startAttackDistance: 5
+  _stopAttackDistance: 6
+  _startChaseDistance: 10
+  _stopChaseDistance: 12
+  _damageDelay: 2
 --- !u!114 &8645080984512393648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +226,19 @@ MonoBehaviour:
   _unit: {fileID: 8645080984512393662}
   _healthBar: {fileID: 5084455754326266672}
   _fillHealthImage: {fileID: 187532987622155276}
+--- !u!114 &6040970797674749488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8645080984512393659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c76c849256ed1f43a9ffacb24e8dac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
 --- !u!1001 &606175928848638386
 PrefabInstance:
   m_ObjectHideFlags: 0

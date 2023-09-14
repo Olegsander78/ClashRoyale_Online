@@ -4,7 +4,8 @@ namespace ClashRoyale
 {
     [CreateAssetMenu(fileName = "_UsualRangeAttack", menuName = "UnitStates/UsualRangeAttack")]
     public class UsualRangeAttack : UnitState_Attack
-    {  
+    {
+        [SerializeField] private Arrow _arrow;
         protected override  bool TryFindTarget(out float stopAttackDistance)
         {
             Vector3 unitPosition = Unit.transform.position;
@@ -26,6 +27,17 @@ namespace ClashRoyale
 
             stopAttackDistance = 0f;
             return false;
+        }
+
+        protected override void Attack()
+        {
+            var unitPosition = Unit.transform.position;
+            var targetPosition = Target.transform.position;
+
+            Arrow arrow = Instantiate(_arrow, unitPosition, Quaternion.identity);
+            arrow.Init(targetPosition);
+            var delay = Vector3.Distance(unitPosition,targetPosition) / arrow.Speed;
+            Target.ApplyDelayDamage(delay, Damage);
         }
     }
 }

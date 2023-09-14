@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ClashRoyale
@@ -22,6 +24,17 @@ namespace ClashRoyale
                 _current = 0f;
 
             OnHealthChanged?.Invoke(_current);
+        }
+
+        public void ApplyDelayDamage(float delay, float damage)
+        {
+            StartCoroutine(DelayDamageRoutine(delay, damage));
+        }
+
+        private IEnumerator DelayDamageRoutine(float delay, float damage)
+        {
+            yield return new WaitForSeconds(delay);
+            ApplyDamage(damage);
         }
     }
 }

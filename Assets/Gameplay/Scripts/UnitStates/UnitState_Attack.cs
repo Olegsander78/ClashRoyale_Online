@@ -4,7 +4,7 @@ namespace ClashRoyale
 {
     public abstract class UnitState_Attack : UnitState
     {
-        [SerializeField] private float _damage = 1.5f;
+        [SerializeField] protected float Damage = 1.5f;
         [SerializeField] private float _delay = 1f;
 
         protected bool TargetIsEnemy;
@@ -18,6 +18,7 @@ namespace ClashRoyale
             base.Constructor(unit);
 
             TargetIsEnemy = Unit.IsEnemy == false;
+            _delay = Unit.Parameters.DamageDelay;
         }
         public override void Init()
         {
@@ -33,25 +34,31 @@ namespace ClashRoyale
 
         public override void Run()
         {
-            _time += Time.deltaTime;
-            if (_time < _delay)
-                return;
-            _time -= _delay;
-
             if (Target == false)
             {
                 Unit.SetState(UnitStateTypes.DEFAULT);
                 return;
             }
 
+            _time += Time.deltaTime;
+            if (_time < _delay)
+                return;
+            _time -= _delay;
+
             var distanceToTarget = Vector3.Distance(Target.transform.position, Unit.transform.position);
             if (distanceToTarget > _stopAttackDistance)
                 Unit.SetState(UnitStateTypes.CHASE);
-            Target.ApplyDamage(_damage);
+
+            Attack();
         }
 
         public override void Finish()
         {
+        }
+
+        protected virtual void Attack()
+        {
+            Target.ApplyDamage(Damage);
         }
 
         protected abstract bool TryFindTarget(out float stopAttackDistance);

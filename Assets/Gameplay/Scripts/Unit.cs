@@ -4,13 +4,14 @@ using UnityRoyale;
 
 namespace ClashRoyale
 {
-    [RequireComponent(typeof(UnitParameters), typeof(Health))]
+    [RequireComponent(typeof(UnitParameters), typeof(Health), typeof(UnitAnimation))]
     public class Unit : MonoBehaviour, IHealth, IDestroy
     {
         public event Action OnDestroyed;
         [field: SerializeField] public Health Health { get; private set; }
         [field: SerializeField] public bool IsEnemy { get; private set; } = false;
         [field: SerializeField] public UnitParameters Parameters;
+        [field: SerializeField] public UnitAnimation AnimationsUnit;
 
         [SerializeField] private UnitState _defaultStateSO;
         [SerializeField] private UnitState _chaseStateSO;
@@ -23,6 +24,8 @@ namespace ClashRoyale
 
         private void Start()
         {
+            AnimationsUnit.Init(this);
+
             CreateStates();
 
             _currentState = _defaultState;

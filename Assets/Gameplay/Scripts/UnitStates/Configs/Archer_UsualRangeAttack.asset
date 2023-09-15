@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c843622c0b6329f4aac476e8906c8834, type: 3}
   m_Name: Archer_UsualRangeAttack
   m_EditorClassIdentifier: 
-  _damage: 1
+  Damage: 1.5
   _delay: 0.5
+  _arrow: {fileID: 1320426175267654125, guid: 3dd30f0d454e9924f818df3c6407776d, type: 3}

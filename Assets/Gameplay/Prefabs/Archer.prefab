@@ -96,10 +96,10 @@ MonoBehaviour:
   _isFlying: 0
   _speed: 4
   _modelRadius: 0.25
-  _startAttackDistance: 5
-  _stopAttackDistance: 6
-  _startChaseDistance: 10
-  _stopChaseDistance: 12
+  _startAttackDistance: 4
+  _stopAttackDistance: 5
+  _startChaseDistance: 7
+  _stopChaseDistance: 9
   _damageDelay: 2
 --- !u!114 &8645080984512393648
 MonoBehaviour:

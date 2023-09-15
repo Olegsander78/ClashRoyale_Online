@@ -60,6 +60,7 @@ namespace ClashRoyale
             }
 
             _currentState.Init();
+            AnimationsUnit.SetState(type);
         }
 
         private void CreateStates()

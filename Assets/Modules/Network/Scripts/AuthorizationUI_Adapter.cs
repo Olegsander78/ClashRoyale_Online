@@ -3,13 +3,15 @@ using UnityEngine.UI;
 
 namespace ClashRoyale
 {
-    public class AuthorizationUI_Apdapter : MonoBehaviour
+    public class AuthorizationUI_Adapter : MonoBehaviour
     {
         [SerializeField] private Authorization _authorization;
         [SerializeField] private InputField _loginInput;
         [SerializeField] private InputField _passwordInput;
         [SerializeField] private Button _signInButton;
         [SerializeField] private Button _signUpButton;
+        [SerializeField] private GameObject _authorizationCanvas;
+        [SerializeField] private GameObject _registrationCanvas;
 
         private void Awake()
         {
@@ -17,6 +19,7 @@ namespace ClashRoyale
             _passwordInput.onEndEdit.AddListener(_authorization.SetPassword);
 
             _signInButton.onClick.AddListener(OnSignInClicked);
+            _signUpButton.onClick.AddListener(OnSignUpClicked);
 
             _authorization.OnErrorOccured += OnAuthorizationEnded;
         }
@@ -27,6 +30,7 @@ namespace ClashRoyale
             _passwordInput.onEndEdit.RemoveListener(_authorization.SetPassword);
 
             _signInButton.onClick.RemoveListener(OnSignInClicked);
+            _signUpButton.onClick.RemoveListener(OnSignUpClicked);
 
             _authorization.OnErrorOccured -= OnAuthorizationEnded;
         }
@@ -42,6 +46,12 @@ namespace ClashRoyale
             _signInButton.gameObject.SetActive(false);
             _signUpButton.gameObject.SetActive(false);
             _authorization.SignIn();
+        }
+
+        private void OnSignUpClicked()
+        {
+            _authorizationCanvas.SetActive(false);
+            _registrationCanvas.SetActive(true);
         }
     }
 }

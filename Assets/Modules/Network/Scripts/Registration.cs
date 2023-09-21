@@ -5,15 +5,17 @@ using UnityEngine;
 
 namespace ClashRoyale
 {
-    public class Authorization : MonoBehaviour
+    public class Registration : MonoBehaviour
     {
         private const string LOGIN = "login";
         private const string PASSWORD = "password";
 
         public event Action OnErrorOccured;
+        public event Action OnSuccessOccured;
 
         private string _login;
         private string _password;
+        private string _confirmPassword;
 
         public void SetLogin(string login)
         {
@@ -25,42 +27,46 @@ namespace ClashRoyale
             _password = password;
         }
 
-        public void SignIn()
+        public void SetConfirmPassword(string confirmPassword)
         {
-            if(string.IsNullOrEmpty(_login) || string.IsNullOrEmpty(_password))
+            _confirmPassword = confirmPassword;
+        }
+
+        public void SignUp()
+        {
+            if(string.IsNullOrEmpty(_login) || string.IsNullOrEmpty(_password) || string.IsNullOrEmpty(_confirmPassword))
             {
-                ErrorMessage("Логин и/или пароль пустые!");
+                ErrorMessage("Login and/or password are empty!");
                 return;
             }
 
-            var uri = URILibrary.MAIN + URILibrary.AUTHORIZATION;
+            if(_password != _confirmPassword)
+            {
+                ErrorMessage("Password mismatch!");
+                return;
+            }
+
+            var uri = URILibrary.MAIN + URILibrary.REGISTRATION;
+
             Dictionary<string, string> data = new Dictionary<string, string>()
             {
                 {LOGIN, _login },
                 {PASSWORD, _password }
             };
 
-            Network.Instance.Post(uri, data, Success, ErrorMessage);
+            Network.Instance.Post(uri, data, SuccessMessage, ErrorMessage);
         }
 
-        private void Success(string data)
-        {
-            string[] result = data.Split('|');
-            if(result.Length < 2 || result[0] != "ok")
+        private void SuccessMessage(string data)
+        {            
+            if(data != "ok")
             {
                 ErrorMessage($"Server respond, error: {data}");
                 return;
             }
 
-            if (int.TryParse(result[1], out int id))
-            {
-                UserInfo.Instance.SetID(id);
-                Debug.Log($"Login success. User ID: {id}");
-            }
-            else
-            {
-                ErrorMessage($"Failed to parse \"{result[1]}\" to INT. Full response: {data}");
-            }
+            Debug.Log($"Registration success");
+            OnSuccessOccured?.Invoke();
         }
 
         private void ErrorMessage(string error)

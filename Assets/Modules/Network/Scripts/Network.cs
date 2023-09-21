@@ -8,6 +8,20 @@ namespace ClashRoyale
 {
     public class Network : MonoBehaviour
     {
+        public static Network Instance { get; private set; }
+
+        private void Awake()
+        {
+            if (Instance)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
         public void Post(string uri, Dictionary<string, string> data, Action<string> success, Action<string> error = null)
             => StartCoroutine(PostRoutine(uri, data, success, error));
 

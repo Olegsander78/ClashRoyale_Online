@@ -10,6 +10,8 @@ namespace ClashRoyale
         private const string LOGIN = "login";
         private const string PASSWORD = "password";
 
+        public event Action OnErrorOccured;
+
         private string _login;
         private string _password;
 
@@ -46,13 +48,14 @@ namespace ClashRoyale
             string[] result = data.Split('|');
             if(result.Length < 2 || result[0] != "ok")
             {
-                ErrorMessage($"Server respond: {data}");
+                ErrorMessage($"Server respond, error: {data}");
                 return;
             }
 
             if (int.TryParse(result[1], out int id))
             {
                 UserInfo.Instance.SetID(id);
+                Debug.Log($"Login success. User ID: {id}");
             }
             else
             {
@@ -63,6 +66,7 @@ namespace ClashRoyale
         private void ErrorMessage(string error)
         {
             Debug.LogError(error);
+            OnErrorOccured?.Invoke();
         }
     }
 }

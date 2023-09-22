@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ClashRoyale
+namespace Registartion_Authorization
 {
     public class AuthorizationUI_Adapter : MonoBehaviour
     {

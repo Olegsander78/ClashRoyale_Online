@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ClashRoyale
+namespace Registartion_Authorization
 {
     public class UserInfo : MonoBehaviour
     {

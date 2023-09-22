@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace ClashRoyale
+namespace Registartion_Authorization
 {
     public class Network : MonoBehaviour
     {

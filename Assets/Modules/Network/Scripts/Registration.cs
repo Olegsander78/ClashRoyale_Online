@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ClashRoyale
+namespace Registartion_Authorization
 {
     public class Registration : MonoBehaviour
     {

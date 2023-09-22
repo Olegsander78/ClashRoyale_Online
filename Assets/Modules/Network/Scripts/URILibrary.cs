@@ -1,4 +1,4 @@
-namespace ClashRoyale
+namespace Registartion_Authorization
 {
     public class URILibrary 
     {

@@ -7,10 +7,16 @@ namespace ClashRoyale
 {
     public class DeckLoader : MonoBehaviour
     {
+        [SerializeField] private DeckManager _deckManager;
         [SerializeField] private List<int> _availableCards = new List<int>();
         [SerializeField] private int[] _selectedCards = new int[2];
 
-        public void Init()
+        private void Start()
+        {
+            StartLoad();
+        }
+
+        private void StartLoad()
         {
             var uri = URILibrary.MAIN + URILibrary.GETDECKINFO;
 
@@ -23,6 +29,7 @@ namespace ClashRoyale
         private void ErrorLoad(string error)
         {
             Debug.LogError(error);
+            StartLoad();
         }
 
         private void SuccesLoad(string data)
@@ -40,6 +47,8 @@ namespace ClashRoyale
                 int.TryParse(deckData.availableCards[i].id, out int id);
                 _availableCards.Add(id);
             }
+
+            _deckManager.Init(_availableCards, _selectedCards);
         }
     }
 

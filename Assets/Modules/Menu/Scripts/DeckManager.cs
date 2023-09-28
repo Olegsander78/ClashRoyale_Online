@@ -12,6 +12,7 @@ namespace ClashRoyale
         [SerializeField] private Card[] _cards;
         [SerializeField] private List<Card> _availableCards = new List<Card>();
         [SerializeField] private List<Card> _selectedCards = new List<Card>();
+        [SerializeField] private AvailableDeckUI _availableDeckUI;
 
         public IReadOnlyList<Card> AvailableCards { get => _availableCards;}
         public IReadOnlyList<Card> SelectedCards { get => _selectedCards;}
@@ -31,6 +32,13 @@ namespace ClashRoyale
             OnUpdatedAvailable?.Invoke(AvailableCards);
             OnUpdatedSelected?.Invoke(SelectedCards);
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            _availableDeckUI.SetAllCardsCount(_cards);
+        }
+#endif
     }
 
     [Serializable]

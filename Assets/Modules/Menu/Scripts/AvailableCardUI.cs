@@ -18,5 +18,9 @@ namespace ClashRoyale
             EditorUtility.SetDirty(this);
         }
 #endif
+        public void Click()
+        {
+
+        }
     }
 }

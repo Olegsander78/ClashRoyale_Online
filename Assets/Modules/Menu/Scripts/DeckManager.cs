@@ -6,7 +6,7 @@ namespace ClashRoyale
 {
     public class DeckManager : MonoBehaviour
     {
-        public event Action<IReadOnlyList<Card>> OnUpdatedAvailable;
+        public event Action<IReadOnlyList<Card>, IReadOnlyList<Card>> OnUpdatedAvailable;
         public event Action<IReadOnlyList<Card>> OnUpdatedSelected;
 
         [SerializeField] private Card[] _cards;
@@ -29,7 +29,7 @@ namespace ClashRoyale
                 _selectedCards.Add(_cards[selectedCardIndexes[i]]);
             }
 
-            OnUpdatedAvailable?.Invoke(AvailableCards);
+            OnUpdatedAvailable?.Invoke(AvailableCards, SelectedCards);
             OnUpdatedSelected?.Invoke(SelectedCards);
         }
 
@@ -45,6 +45,7 @@ namespace ClashRoyale
     public class Card
     {
         [field:SerializeField] public string name { get; private set; }
+        [field:SerializeField] public int id { get; private set; }
         [field:SerializeField] public Sprite sprite { get; private set; }
     }
 }

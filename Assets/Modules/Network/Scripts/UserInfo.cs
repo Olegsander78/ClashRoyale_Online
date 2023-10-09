@@ -18,7 +18,7 @@ namespace Registartion_Authorization
             DontDestroyOnLoad(gameObject);
         }
 
-        public int ID { get; private set; }
+        public int ID { get; private set; } = 4;
 
         public void SetID(int id)
         {

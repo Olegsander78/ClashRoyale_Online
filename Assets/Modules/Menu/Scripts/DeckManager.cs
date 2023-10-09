@@ -1,6 +1,8 @@
+using Registartion_Authorization;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Network = Registartion_Authorization.Network;
 
 namespace ClashRoyale
 {
@@ -9,6 +11,7 @@ namespace ClashRoyale
         public event Action<IReadOnlyList<Card>, IReadOnlyList<Card>> OnUpdatedAvailable;
         public event Action<IReadOnlyList<Card>> OnUpdatedSelected;
 
+        [SerializeField] private GameObject _lockScreenCanvas;
         [SerializeField] private Card[] _cards;
         [SerializeField] private List<Card> _availableCards = new List<Card>();
         [SerializeField] private List<Card> _selectedCards = new List<Card>();
@@ -31,6 +34,67 @@ namespace ClashRoyale
 
             OnUpdatedAvailable?.Invoke(AvailableCards, SelectedCards);
             OnUpdatedSelected?.Invoke(SelectedCards);
+
+            _lockScreenCanvas.SetActive(false);
+        }
+
+        public void ChangesDeck(IReadOnlyList<Card> selectedCards, Action success)
+        {
+            _lockScreenCanvas.SetActive(true);
+            int[] IDs = new int[selectedCards.Count];
+            for (int i = 0; i < selectedCards.Count; i++)
+            {
+                IDs[i] = selectedCards[i].id;
+            }
+
+            string json = JsonUtility.ToJson(new Wrapper(IDs));
+
+            var uri = URILibrary.MAIN + URILibrary.SETSELECTDECK;
+            var data = new Dictionary<string, string> 
+            { 
+                { "userID", UserInfo.Instance.ID.ToString() },
+                { "json", json }
+            };
+
+            success += () =>
+            {
+                for (int i = 0; i < _selectedCards.Count; i++)
+                {
+                    _selectedCards[i] = selectedCards[i];
+                }
+                OnUpdatedSelected?.Invoke(SelectedCards);
+            };
+
+            Network.Instance.Post(uri, data, (s)=> SendSuccess(s, success), Error);
+        }
+
+        private void Error(string obj)
+        {
+            Debug.LogError("Неудачная попытка отправки новой колоды" + obj);
+            _lockScreenCanvas.SetActive(false);
+        }
+
+        private void SendSuccess(string obj, Action success)
+        {
+            if(obj != "ok")
+            {
+                Error(obj);
+                return;
+            }
+
+            success?.Invoke();
+            _lockScreenCanvas.SetActive(false);
+        }
+
+        [Serializable]
+        private class Wrapper
+        {
+            public int[] IDs;
+
+            public Wrapper(int[] IDs)
+            {
+                this.IDs = IDs;
+            }
         }
 
 #if UNITY_EDITOR

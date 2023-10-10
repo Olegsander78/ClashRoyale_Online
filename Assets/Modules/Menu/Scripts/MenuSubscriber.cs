@@ -7,12 +7,14 @@ namespace ClashRoyale
         [SerializeField] private DeckManager _deckManager;
         [SerializeField] private SelectedDeckUI _selectedDeckUI;
         [SerializeField] private SelectedDeckUI _selectedDeckUITwo;
+        [SerializeField] private SelectedDeckUI _selectedDeckUIMatchmaking;
         [SerializeField] private AvailableDeckUI _availableDeckUI;
 
         private void Start()
         {
             _deckManager.OnUpdatedSelected += _selectedDeckUI.OnUpdatedCardList;
             _deckManager.OnUpdatedSelected += _selectedDeckUITwo.OnUpdatedCardList;
+            _deckManager.OnUpdatedSelected += _selectedDeckUIMatchmaking.OnUpdatedCardList;
             _deckManager.OnUpdatedAvailable += _availableDeckUI.UpdateCardsList;
         }
 
@@ -20,6 +22,7 @@ namespace ClashRoyale
         {
             _deckManager.OnUpdatedSelected -= _selectedDeckUI.OnUpdatedCardList;
             _deckManager.OnUpdatedSelected -= _selectedDeckUITwo.OnUpdatedCardList;
+            _deckManager.OnUpdatedSelected -= _selectedDeckUIMatchmaking.OnUpdatedCardList;
             _deckManager.OnUpdatedAvailable -= _availableDeckUI.UpdateCardsList;
         }
     }

@@ -1,6 +1,7 @@
 using Multiplayer;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ClashRoyale
 {
@@ -14,6 +15,7 @@ namespace ClashRoyale
             public string[] player2;
         }
 
+        [SerializeField] private string _gameSceneName = "Main";
         [SerializeField] private GameObject _mainManuCanvas;
         [SerializeField] private GameObject _matchmakingCanvas;
         [SerializeField] private GameObject _cancelButton;
@@ -71,6 +73,8 @@ namespace ClashRoyale
                 enemyDeck = decks.player1;
             }
             CardsInGame.Instance.SetDeck(playDeck, enemyDeck);
+
+            SceneManager.LoadScene(_gameSceneName);
         }
         
         private void CancelStart()

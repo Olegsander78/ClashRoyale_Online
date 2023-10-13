@@ -1,6 +1,7 @@
 using Registartion_Authorization;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Network = Registartion_Authorization.Network;
 
@@ -66,6 +67,21 @@ namespace ClashRoyale
             };
 
             Network.Instance.Post(uri, data, (s)=> SendSuccess(s, success), Error);
+        }
+
+        public bool TryGetDeck(string[] cardsID, out Dictionary<string, Card> deck)
+        {
+            deck = new Dictionary<string, Card>();
+            for (int i = 0; i < cardsID.Length; i++)
+            {
+                if (int.TryParse(cardsID[i], out int id) == false || id == 0) 
+                    return false;
+                Card card = _cards.FirstOrDefault(x => x.id == id);
+                if (card == null)
+                    return false;
+                deck.Add(cardsID[i], card);
+            }
+            return true;
         }
 
         private void Error(string obj)

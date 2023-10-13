@@ -1,15 +1,37 @@
 using Multiplayer;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace ClashRoyale
 {
     public class MatchmakingManager : MonoBehaviour
     {
+        [Serializable]
+        public class Decks
+        {
+            public string player1ID;
+            public string[] player1;
+            public string[] player2;
+        }
+
         [SerializeField] private GameObject _mainManuCanvas;
         [SerializeField] private GameObject _matchmakingCanvas;
         [SerializeField] private GameObject _cancelButton;
+
+        public void Subscribe()
+        {
+            MultiplayerManager.Instance.GetReadyReceived += GetReady;
+            MultiplayerManager.Instance.StartReceived += StartGame;
+            MultiplayerManager.Instance.CancelStartReceived += CancelStart;
+        }
+
+        public void Unsubscribe()
+        {
+            MultiplayerManager.Instance.GetReadyReceived -= GetReady;
+            MultiplayerManager.Instance.StartReceived -= StartGame;
+            MultiplayerManager.Instance.CancelStartReceived -= CancelStart;
+        }
+
         public async void FindOpponent()
         {
             _cancelButton.SetActive(false);
@@ -26,6 +48,34 @@ namespace ClashRoyale
             _matchmakingCanvas.SetActive(false);
 
             MultiplayerManager.Instance.Disconnect();
+        }        
+
+        private void GetReady()
+        {
+            _cancelButton.SetActive(false);
+        }
+
+        private void StartGame(string jsonDecks)
+        {
+            Decks decks = JsonUtility.FromJson<Decks>(jsonDecks);
+            string[] playDeck;
+            string[] enemyDeck;
+            if(decks.player1ID == MultiplayerManager.Instance.ClientId)
+            {
+                playDeck = decks.player1;
+                enemyDeck = decks.player2;
+            }
+            else
+            {
+                playDeck = decks.player2;
+                enemyDeck = decks.player1;
+            }
+            CardsInGame.Instance.SetDeck(playDeck, enemyDeck);
+        }
+        
+        private void CancelStart()
+        {
+            _cancelButton.SetActive(true);
         }
     }
 }
